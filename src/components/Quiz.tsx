@@ -13,7 +13,7 @@ export const Quiz = () => {
         <div className="App">
             <GlobalStyle />
             {gameOver ? <QuizMenu /> : null}
-            {isLoading ? <ReactLoading className="spinner" type={"spin"} color={"orange"} height={100} width={100} /> : null}
+            {isLoading ? <ReactLoading className="spinner" type="spokes" color={"orange"} height={100} width={100} /> : null}
             {!isLoading && !gameOver ? <QuestionCard /> : null}
         </div>
     )
