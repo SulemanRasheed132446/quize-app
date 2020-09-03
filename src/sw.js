@@ -1,6 +1,7 @@
 const cacheName = 'quizee-pwa';
 
-this.addEventListener('install', function (event) {
+self.addEventListener('install', function (event) {
+    console.log("yes");
     event.waitUntil(
         caches.open(cacheName).then(function (cache) {
             return cache.addAll(
