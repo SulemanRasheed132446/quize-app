@@ -1,5 +1,4 @@
 const cacheName = 'quizee-pwa';
-
 self.addEventListener('install', function (event) {
     console.log("yes");
     event.waitUntil(
