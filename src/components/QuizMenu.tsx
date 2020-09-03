@@ -35,6 +35,7 @@ export const QuizMenu = () => {
         }
         getCategories();
     },
+        // eslint-disable-next-line
         [])
 
 
