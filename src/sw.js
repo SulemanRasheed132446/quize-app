@@ -11,7 +11,7 @@ const assets = [
     'https://quizee.imfast.io/hard_template.pdf',
 ];
 
-self.addEventListener('install', (event) => {
+this.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(dynamicCache).then((cache) => {
             cache.addAll(assets);
