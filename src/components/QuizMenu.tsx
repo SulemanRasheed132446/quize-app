@@ -9,7 +9,16 @@ const difficulties: Difficulty[] = [
     Difficulty.MEDIUM,
     Difficulty.HARD
 ];
+async function getCachedData(cacheName: string, url: string) {
+    const cacheStorage = await caches.open(cacheName);
+    const cachedResponse = await cacheStorage.match(url);
 
+    if (!cachedResponse || !cachedResponse.ok) {
+        return false;
+    }
+
+    return await cachedResponse.json();
+}
 
 export const QuizMenu = () => {
 
@@ -26,12 +35,27 @@ export const QuizMenu = () => {
 
     useEffect(() => {
         const getCategories = async () => {
-            const {
-                data: {
-                    trivia_categories
-                }
-            } = await Axios.get('https://opentdb.com/api_category.php');
-            setcategories(trivia_categories);
+            // eslint-disable-next-line
+            const url = 'https://opentdb.com/api_category.php';
+            try {
+                const {
+                    data: {
+                        trivia_categories
+                    }
+                } = await Axios.get(url);
+                setcategories(trivia_categories);
+            }
+            catch (err) {
+                console.log('Problem with fetch (Internet offline ?): ',
+                    err.message);
+                const data = await getCachedData('Quizee-Dynamic-Cache', url);
+                const {
+                    data: {
+                        trivia_categories
+                    }
+                } = data;
+                setcategories(trivia_categories);
+            }
         }
         getCategories();
     },
