@@ -33,8 +33,15 @@ export const getQuestions = async ({ difficulty }: Input): Promise<QuestionState
     }
     catch (err) {
         const data = await getCachedData('Quizee-Dynamic-Cache', url);
-        console.log(data);
-        return [];
+        const { results } = data;
+        console.log(result);
+        return results.map((question: Question): QuestionState => {
+            return {
+                question: question.question,
+                correct_answer: question.correct_answer,
+                answers: shuffleArray([...question.incorrect_answers, question.correct_answer])
+            }
+        })
     }
 
 }
