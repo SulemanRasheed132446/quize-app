@@ -1,65 +1,24 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { QuizContext } from '../provider/QuizProvider';
-import { Difficulty, Category } from '../Types/types'
-import Axios from 'axios';
-
-
+import { Difficulty } from '../Types/types'
+import { Grid } from '@material-ui/core'
+import { DifficultyOption } from './QuestionCard.styles'
 const difficulties: Difficulty[] = [
     Difficulty.EASY,
     Difficulty.MEDIUM,
     Difficulty.HARD
 ];
-async function getCachedData(cacheName: string, url: string) {
-    const cacheStorage = await caches.open(cacheName);
-    const cachedResponse = await cacheStorage.match(url);
-
-    if (!cachedResponse || !cachedResponse.ok) {
-        return false;
-    }
-    console.log(cachedResponse);
-
-    return await cachedResponse.json();
-}
 
 export const QuizMenu = () => {
 
 
     const {
         startQuiz,
-        questionAmountHandler,
         difficultyHandler,
-        setcategories,
-        setCategoryId,
-        categories,
-        totalQuestions
+        difficulty
     } = useContext(QuizContext);
 
-    useEffect(() => {
-        const getCategories = async () => {
-            // eslint-disable-next-line
-            const url = 'https://opentdb.com/api_category.php';
-            try {
-                const {
-                    data: {
-                        trivia_categories
-                    }
-                } = await Axios.get(url);
-                setcategories(trivia_categories);
-            }
-            catch (err) {
-                console.log('Problem with fetch (Internet offline ?): ',
-                    err.message);
-                const data = await getCachedData('Quizee-Dynamic-Cache', url);
-                const {
-                    trivia_categories
-                } = data;
-                setcategories(trivia_categories);
-            }
-        }
-        getCategories();
-    },
-        // eslint-disable-next-line
-        [])
+
 
 
     return (
@@ -67,25 +26,19 @@ export const QuizMenu = () => {
         <>
             <div>
                 <p className="title"> Quiz App</p>
-                <input type="number" min="5" max="20" step="5" onChange={questionAmountHandler} value={totalQuestions} />
                 <br />
-                <select onChange={(e) => setCategoryId(e.currentTarget.value)}>
-                    {categories?.map((category: Category) => {
+                <Grid container justify="space-between" alignContent="space-around">
+                    {difficulties.map(difficultyLevel => {
                         return (
-                            <option key={category.id} value={category.id}>{category.name}</option>
-                        )
-                    })}
-                </select>
-                <br />
-
-                <select onChange={difficultyHandler}>
-                    {difficulties.map(difficulty => {
-                        return (
-                            <option key={difficulty} value={difficulty}>{difficulty}</option>
+                            <Grid key={difficultyLevel} xs={12} sm={4} container item >
+                                <DifficultyOption selected={difficulty === difficultyLevel} onClick={() => difficultyHandler!(difficultyLevel)}>
+                                    <div >{difficultyLevel.toUpperCase()}</div>
+                                </DifficultyOption>
+                            </Grid>
                         )
                     })}
 
-                </select>
+                </Grid>
                 <br />
 
                 <button className="btn" onClick={startQuiz} >Start Quiz</button>

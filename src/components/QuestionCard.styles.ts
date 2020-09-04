@@ -6,6 +6,9 @@ type ButtonWrapperProps = {
 }
 
 
+type SelectedProps = {
+    selected: boolean
+}
 
 export const ButtonWrapper = styled.div<ButtonWrapperProps>`
     transition: all 0.3s;
@@ -38,3 +41,15 @@ export const ButtonWrapper = styled.div<ButtonWrapperProps>`
 
 
 `;
+
+export const DifficultyOption = styled.div<SelectedProps>`
+    padding: 2rem;
+    color: ${({ selected }) => selected ? 'white' : 'orange'};
+    background: ${({ selected }) => selected ? 'orange' : 'white'};
+    text-align:center;
+    border: 1px solid white;
+    margin: 1rem 0.5rem;
+    transition: all 0.5s;
+    width: 100%;
+    
+` 

@@ -1,16 +1,14 @@
 import React, { createContext, useState } from 'react';
 import { getQuestions } from '../services/getQuestions';
-import { QuestionState, Difficulty, Category } from '../Types/types'
+import { QuestionState, Difficulty } from '../Types/types'
+
+
 type quizContext = {
     goToQuizMenu: (e: React.MouseEvent<HTMLButtonElement>) => void
     nextQuestion: (e: React.MouseEvent<HTMLButtonElement>) => void
     startQuiz: () => Promise<void>
-    questionAmountHandler: (e: React.ChangeEvent<HTMLInputElement>) => void
-    difficultyHandler: (e: React.ChangeEvent<HTMLSelectElement>) => void
+    difficultyHandler: (difficulty: Difficulty) => void
     checkAnswer: (q: React.MouseEvent<HTMLButtonElement>) => void
-    setcategories: any
-    setCategoryId: any
-    categories: Category[]
     gameOver: boolean
     isLoading: boolean
     questionNo: number
@@ -18,6 +16,7 @@ type quizContext = {
     totalQuestions: string
     questions: QuestionState[]
     userAnswers: UserAnswer[]
+    difficulty: Difficulty
 }
 type UserAnswer = {
     correct: string
@@ -28,13 +27,11 @@ export const QuizContext = createContext<Partial<quizContext>>({});
 
 
 export const QuizProvider: React.FC = ({ children }) => {
-    const [totalQuestions, setTotalQuestions] = useState('10');
+    const [totalQuestions,] = useState('5');
     const [difficulty, setDifficulty] = useState(Difficulty.EASY);
     const [questions, setQuestions] = useState<QuestionState[]>([])
     const [isLoading, setIsLoading] = useState(false);
     const [gameOver, setGameOver] = useState(true);
-    const [categoryId, setCategoryId] = useState("10")
-    const [categories, setcategories] = useState<Category[]>([])
     const [questionNo, setQuestionNo] = useState(0);
     const [score, setscore] = useState(0);
     const [userAnswers, setuserAnswers] = useState<UserAnswer[]>([]);
@@ -44,9 +41,7 @@ export const QuizProvider: React.FC = ({ children }) => {
         setGameOver(false);
         setIsLoading(true);
         const result = await getQuestions({
-            amount: totalQuestions,
             difficulty,
-            category: categoryId
         });
         setQuestionNo(0);
         setQuestions(result);
@@ -54,11 +49,8 @@ export const QuizProvider: React.FC = ({ children }) => {
         setuserAnswers([]);
     };
 
-    const questionAmountHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTotalQuestions(e.currentTarget.value);
-    }
-    const difficultyHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        switch (e.target.value) {
+    const difficultyHandler = (difficulty: Difficulty) => {
+        switch (difficulty) {
             case Difficulty.EASY:
                 setDifficulty(Difficulty.EASY);
                 break;
@@ -94,11 +86,7 @@ export const QuizProvider: React.FC = ({ children }) => {
         <QuizContext.Provider value={{
             startQuiz,
             nextQuestion,
-            questionAmountHandler,
             difficultyHandler,
-            setcategories,
-            setCategoryId,
-            categories,
             gameOver,
             isLoading,
             questionNo,
@@ -107,7 +95,8 @@ export const QuizProvider: React.FC = ({ children }) => {
             questions,
             userAnswers,
             checkAnswer,
-            goToQuizMenu
+            goToQuizMenu,
+            difficulty
         }}>
             {children}
         </QuizContext.Provider>

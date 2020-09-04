@@ -3,8 +3,11 @@
 //
 const dynamicCache = 'Quizee-Dynamic-Cache';
 const assets = [
-    'https://opentdb.com/api.php?amount=10&category=18&type=multiple&difficulty=easy',
-    'https://opentdb.com/api_category.php'
+    'https://opentdb.com/api_category.php',
+    `https://opentdb.com/api.php?amount=5&category=12&difficulty=easy&type=multiple`,
+    `https://opentdb.com/api.php?amount=5&category=12&difficulty=hard&type=multiple`,
+    `https://opentdb.com/api.php?amount=5&category=12&difficulty=medium&type=multiple`,
+
 ];
 
 self.addEventListener('install', (event) => {

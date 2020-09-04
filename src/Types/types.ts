@@ -1,7 +1,5 @@
 export type Input = {
-    amount: string,
     difficulty: Difficulty,
-    category: string
 }
 export type Category = {
     id: number
