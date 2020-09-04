@@ -16,6 +16,7 @@ async function getCachedData(cacheName: string, url: string) {
     if (!cachedResponse || !cachedResponse.ok) {
         return false;
     }
+    console.log(cachedResponse);
 
     return await cachedResponse.json();
 }
