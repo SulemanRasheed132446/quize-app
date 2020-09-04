@@ -34,7 +34,6 @@ export const getQuestions = async ({ difficulty }: Input): Promise<QuestionState
     catch (err) {
         const data = await getCachedData('Quizee-Dynamic-Cache', url);
         const { results } = data;
-        console.log(results);
         return results.map((question: Question): QuestionState => {
             return {
                 question: question.question,
