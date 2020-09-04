@@ -51,9 +51,7 @@ export const QuizMenu = () => {
                     err.message);
                 const data = await getCachedData('Quizee-Dynamic-Cache', url);
                 const {
-                    data: {
-                        trivia_categories
-                    }
+                    trivia_categories
                 } = data;
                 setcategories(trivia_categories);
             }
